@@ -1,17 +1,166 @@
 @font-face {
-	font-family: Creepy;
-	src: url(./Assets/Fonts/Creepy.woff) format(woff),
-		url(./Assets/Fonts/Creepy.woff2) format(woff2);
+	font-family: 'Creepy';
+	src: url('Assets/Fonts/Creepy.woff') format('woff'),
+		url('Assets/Fonts/Creepy.woff2') format('woff2');
 }
 
 @font-face {
-	font-family: Lunacy;
-	src: url(./Assets/Fonts/Lunacy.woff) format(woff),
-		url(./Assets/Fonts/Lunacy.woff2) format(woff2);
+	font-family: 'Lunacy';
+	src: url('Assets/Fonts/Lunacy.woff') format('woff'),
+		url('Assets/Fonts/Lunacy.woff2') format('woff2');
 }
 
 * {
 	margin: 0px;
 	padding: 0px;
 	box-sizing: border-box;
+	user-select: none;
+	transition: 100ms ease-in-out;
+}
+
+html,
+body {
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+	cursor: url(./Assets/Cursors/ghost.cur), auto;
+}
+
+body {
+	background: radial-gradient(#9d5900, #3d2200);
+}
+
+h1.page-title {
+	color: #ff6d00;
+	font-family: Creepy, sans-serif;
+	font-weight: normal;
+	text-align: center;
+	font-size: 6em;
+	padding: 28px;
+}
+
+div.status {
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	font-family: Lunacy, sans-serif;
+	font-size: 3em;
+	color: #ffbb89;
+}
+
+div.💳-📦 {
+	display: grid;
+	grid-template-columns: repeat(8, auto);
+	grid-gap: 10px;
+	width: calc(100vw - 80px);
+	margin: auto;
+	perspective: 900px;
+}
+
+div.💳 {
+	position: relative;
+	height: 175px;
+	width: 125px;
+}
+
+div.💳-face {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	backface-visibility: hidden;
+	border-radius: 12px;
+	border-width: 1px;
+	border-style: solid;
+	transition: transform 800ms ease-in-out;
+	cursor: url(./Assets/Cursors/ghost-hover.cur), auto;
+}
+
+div.💳.visible div.💳-back {
+	transform: rotateY(-180deg);
+}
+
+div.💳.visible div.💳-front {
+	transform: rotateY(0deg);
+}
+
+div.💳.matched img.💳-value {
+	animation: rotate 1s linear infinite 800ms;
+}
+
+@keyframes rotate {
+	0%,
+	100% {
+		transform: rotate(0deg);
+	}
+	25% {
+		transform: rotate(-30deg);
+	}
+	75% {
+		transform: rotate(30deg);
+	}
+}
+
+div.💳-back {
+	background-color: #000000;
+	border-color: #ff6d00;
+}
+
+div.💳-front {
+	background-color: #ffbb89;
+	border-color: #333333;
+	transform: rotateY(180deg);
+}
+
+img.💳-value {
+	transform: scale(0.9);
+}
+
+div.💳-front:hover img.💳-value {
+	transform: scale(1);
+}
+
+img.🕸 {
+	position: absolute;
+	width: 47px;
+}
+
+img.🕸-top-left {
+	transform: rotate(-90deg);
+	top: 0px;
+	left: 0px;
+}
+
+img.🕸-top-right {
+	top: 0px;
+	right: 0px;
+}
+
+img.🕸-bottom-left {
+	transform: rotate(180deg);
+	bottom: 0px;
+	left: 0px;
+}
+
+img.🕸-bottom-right {
+	transform: rotate(90deg);
+	bottom: 0px;
+	right: 0px;
+}
+
+img.🕷 {
+	align-self: flex-start;
+	transform: translateY(-10px);
+}
+
+div.💳-back:hover img.🕷 {
+	transform: translateY(0px);
+}
+
+div.💳-face:hover img.🕸 {
+	width: 52px;
 }
