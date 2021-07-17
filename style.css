@@ -1,8 +1,4 @@
-@font-face {
-	font-family: 'Creepy';
-	src: url('Assets/Fonts/Creepy.woff') format('woff'),
-		url('Assets/Fonts/Creepy.woff2') format('woff2');
-}
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
 
 @font-face {
 	font-family: 'Lunacy';
@@ -22,21 +18,101 @@ html,
 body {
 	height: 100vh;
 	width: 100vw;
-	overflow: hidden;
 	cursor: url(./Assets/Cursors/ghost.cur), auto;
+	overflow: overlay;
 }
 
 body {
-	background: radial-gradient(#9d5900, #3d2200);
+	background: radial-gradient(hsl(34, 100%, 31%), hsl(33, 100%, 12%));
 }
 
 h1.page-title {
-	color: #ff6d00;
-	font-family: Creepy, sans-serif;
-	font-weight: normal;
+	color: hsl(26, 100%, 50%);
+	font-family: 'Creepster', sans-serif;
 	text-align: center;
 	font-size: 6em;
 	padding: 28px;
+}
+
+div.start-screen {
+	height: 100vh;
+	width: 100vw;
+	color: hsl(26, 100%, 50%);
+	background: hsla(0, 0%, 7%, 0.73);
+	font-family: 'Creepster', sans-serif;
+	text-align: center;
+	font-size: 6em;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 100;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: url(./Assets/Cursors/ghost-hover.cur), pointer;
+	transition: 700ms ease-in-out;
+}
+
+div.start-screen.remove,
+div.lose-screen.remove,
+div.victory-screen.remove {
+	animation: fadeOut 700ms ease-in-out 0s 1 forwards;
+}
+
+@keyframes fadeOut {
+	100% {
+		opacity: 0;
+	}
+}
+
+div.lose-screen {
+	color: hsl(26, 100%, 50%);
+	background: hsla(0, 0%, 7%, 0.73);
+	font-family: 'Creepster', sans-serif;
+	text-align: center;
+	height: 100vh;
+	width: 100vw;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 100;
+	padding: 25% 0px;
+	cursor: url(./Assets/Cursors/ghost-hover.cur), pointer;
+}
+
+div.lose-screen div {
+	width: 100%;
+}
+
+div.lose-screen div.small {
+	font-size: 3em;
+}
+
+div.lose-screen div:not(.small),
+div.victory-screen > div:nth-child(1) {
+	font-size: 8em;
+}
+
+div.victory-screen {
+	font-family: 'Creepster', sans-serif;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 100;
+	height: 100vh;
+	width: 100vw;
+	display: grid;
+	grid-template-rows: 32%, 32%;
+	text-align: center;
+	color: hsl(26deg 100% 50%);
+	background: hsla(0, 0%, 7%, 0.73);
+	align-items: center;
+	justify-content: center;
+	cursor: url(./assets/cursors/ghost-hover.cur), pointer;
+}
+
+div.more-info {
+	font-size: 52px;
 }
 
 div.status {
@@ -44,24 +120,25 @@ div.status {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-	font-family: Lunacy, sans-serif;
+	font-family: 'Lunacy', sans-serif !important;
 	font-size: 3em;
-	color: #ffbb89;
+	color: hsl(25, 100%, 77%);
 }
 
 div.💳-📦 {
-	display: grid;
-	grid-template-columns: repeat(8, auto);
-	grid-gap: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 	width: calc(100vw - 80px);
 	margin: auto;
-	perspective: 900px;
+	perspective: 1200px;
 }
 
 div.💳 {
 	position: relative;
 	height: 175px;
 	width: 125px;
+	margin: 4px;
 }
 
 div.💳-face {
@@ -77,7 +154,7 @@ div.💳-face {
 	border-width: 1px;
 	border-style: solid;
 	transition: transform 800ms ease-in-out;
-	cursor: url(./Assets/Cursors/ghost-hover.cur), auto;
+	cursor: url(./Assets/Cursors/ghost-hover.cur), pointer;
 }
 
 div.💳.visible div.💳-back {
@@ -106,13 +183,13 @@ div.💳.matched img.💳-value {
 }
 
 div.💳-back {
-	background-color: #000000;
-	border-color: #ff6d00;
+	background-color: hsl(0, 0%, 0%);
+	border-color: hsl(26, 100%, 50%);
 }
 
 div.💳-front {
-	background-color: #ffbb89;
-	border-color: #333333;
+	background-color: hsl(25, 100%, 77%);
+	border-color: hsl(0, 0%, 20%);
 	transform: rotateY(180deg);
 }
 
