@@ -59,6 +59,18 @@ div.victory-screen.remove {
 	animation: fadeOut 700ms ease-in-out 0s 1 forwards;
 }
 
+div.start-screen:active,
+div.lose-screen:active,
+div.victory-screen:active {
+	color: hsl(208, 100%, 97%);
+}
+
+div.start-screen:active > div,
+div.lose-screen:active > div,
+div.victory-screen:active > div {
+	transform: scale(0.85);
+}
+
 @keyframes fadeOut {
 	100% {
 		opacity: 0;
@@ -76,8 +88,11 @@ div.lose-screen {
 	top: 0px;
 	left: 0px;
 	z-index: 100;
-	padding: 25% 0px;
 	cursor: url(./Assets/Cursors/ghost-hover.cur), pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
 }
 
 div.lose-screen div {
@@ -88,7 +103,11 @@ div.lose-screen div.small {
 	font-size: 3em;
 }
 
-div.lose-screen div:not(.small),
+div.lose-screen > div {
+	font-size: 1em;
+}
+
+div.lose-screen > div > div:not(.small),
 div.victory-screen > div:nth-child(1) {
 	font-size: 8em;
 }
@@ -101,14 +120,14 @@ div.victory-screen {
 	z-index: 100;
 	height: 100vh;
 	width: 100vw;
-	display: grid;
-	grid-template-rows: 32%, 32%;
+	display: flex;
 	text-align: center;
 	color: hsl(26deg 100% 50%);
 	background: hsla(0, 0%, 7%, 0.73);
 	align-items: center;
 	justify-content: center;
 	cursor: url(./assets/cursors/ghost-hover.cur), pointer;
+	opacity: 0;
 }
 
 div.more-info {
@@ -123,6 +142,19 @@ div.status {
 	font-family: 'Lunacy', sans-serif !important;
 	font-size: 3em;
 	color: hsl(25, 100%, 77%);
+}
+
+div.time span.less {
+	animation: blinking 0.5s ease-in-out 0s infinite;
+}
+
+@keyframes blinking {
+	0% {
+		color: hsl(25, 100%, 77%);
+	}
+	100% {
+		color: hsl(0, 100%, 63%);
+	}
 }
 
 div.💳-📦 {

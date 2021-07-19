@@ -1,7 +1,10 @@
 let cardContainer = document.getElementsByClassName("💳-📦")[0];
+let moveHTML = document.querySelector(".moves > span");
+let creepy = new Audio("./assets/audio/creepy.mp3");
 let setUpCall = 0;
 let openCard = 0;
 let openCardIDs = [];
+let timer;
 
 let setUp = () => {
       let renderImages = [
@@ -44,19 +47,19 @@ let setUp = () => {
                   image: "skull",
                   emoji: "☠",
                   left: 2
-            },
+            }
       ];
 
-      for (let i = 0; i < 16; i++) {
+      for (let i = 0; i < renderImages.length * 2; i++) {
             let randomSelector = Math.floor(Math.random() * renderImages.length);
             if (renderImages[randomSelector].left < 1) {
                   while (renderImages[randomSelector].left == 0) {
                         randomSelector = Math.floor(Math.random() * renderImages.length);
-                  }
+                  };
                   renderImages[randomSelector].left -= 1;
             } else if (renderImages[randomSelector].left > 0) {
                   renderImages[randomSelector].left -= 1;
-            }
+            };
             cardContainer.innerHTML += `
             <div class="💳" id="${i}">
                   <div class="💳-back 💳-face">
@@ -74,25 +77,47 @@ let setUp = () => {
                         <img src="./assets/images/game-images/${renderImages[randomSelector].image}.png" alt="${renderImages[randomSelector].emoji}" class="💳-value">
                   </div>
             </div>`;
-      }
-      let cardBack = document.getElementsByClassName("💳-back");
+      };
       let card = document.getElementsByClassName("💳");
+      let cardBack = document.getElementsByClassName("💳-back");
+      let cardValue = document.getElementsByClassName("💳-value");
+      let cardMatched = document.getElementsByClassName("matched");
 
       for (let i = 0; i < cardBack.length; i++) {
             cardBack[i].addEventListener("click", () => {
+                  let flip = new Audio("./assets/audio/flip.wav");
+                  flip.play();
                   if (openCard < 2 && !(cardBack[i].parentElement.classList.contains("visible"))) {
                         cardBack[i].parentElement.classList.add("visible");
                         openCardIDs.push(cardBack[i].parentElement.id);
-                        console.log(openCardIDs);
                         openCard++;
-                  } else if (openCard == 2) {
-                        openCard = 0;
-                        for (let i = 0; i < openCardIDs.length; i++) {
-                              card[openCardIDs[i]].classList.remove("visible");
-                        }
+                        if (openCard == 2) {
+                              moveHTML.innerHTML++;
+                              openCard = 0;
+                              if (cardValue[openCardIDs[0]].getAttribute("src") == cardValue[openCardIDs[1]].getAttribute("src")) {
+                                    let match = new Audio("./assets/audio/match.wav");
+                                    for (let i = 0; i < openCardIDs.length; i++) {
+                                          card[openCardIDs[i]].classList.add("matched");
+                                          setTimeout(() => {
+                                                match.play();
+                                          }, 100);
+                                    };
+                                    if (cardMatched.length == renderImages.length * 2) {
+                                          gameWon();
+                                    };
+                                    openCardIDs = [];
+                              } else if (!(cardValue[openCardIDs[0]].getAttribute("src") == cardValue[openCardIDs[1]].getAttribute("src"))) {
+                                    setTimeout(() => {
+                                          for (let i = 0; i < openCardIDs.length; i++) {
+                                                card[openCardIDs[i]].classList.remove("visible");
+                                          };
+                                          openCardIDs = [];
+                                    }, 700);
+                              }
+                        };
                   };
             });
-      }
+      };
       setTimeout(() => {
             startTimer();
       }, 700);
@@ -104,19 +129,23 @@ let startTimer = () => {
       setTimeout(() => {
             timerHTML.innerHTML -= 1;
       }, 300);
-      let timer = setInterval(() => {
+      timer = setInterval(() => {
             timerHTML.innerHTML -= 1;
-            if (timerHTML.innerHTML == 0) {
-                  clearInterval(timer)
+            if (timerHTML.innerHTML == 10) {
+                  timerHTML.classList.toggle("less");
+            } else if (timerHTML.innerHTML == 0) {
+                  clearInterval(timer);
                   gameOver();
-            } else if (timer.innerHTML <= 10) {
-
             }
       }, 1000);
 };
 
 let startPage = document.getElementsByClassName("start-screen")[0];
 startPage.addEventListener("click", () => {
+      creepy.play();
+      setInterval(() => {
+            creepy.play();
+      }, 216000);
       if (setUpCall < 1) {
             startPage.classList.add("remove");
             setTimeout(() => {
@@ -124,5 +153,64 @@ startPage.addEventListener("click", () => {
             }, 700);
             setUp();
       };
-      setUpCall += 1;
+      setUpCall++;
+});
+
+let victoryScreen = document.getElementsByClassName("victory-screen")[0];
+let timeTaken = document.querySelector(".time-left > span");
+let movesTaken = document.querySelector(".moves-taken > span");
+let gameWon = () => {
+      let victory = new Audio("./assets/audio/victory.wav");
+      victory.play();
+      victoryScreen.style.display = "flex";
+      victoryScreen.classList.remove("remove");
+      timeTaken.innerHTML = 100 - timerHTML.innerHTML;
+      movesTaken.innerHTML = moveHTML.innerHTML;
+      timerHTML.classList.remove("less");
+      clearInterval(timer);
+      setUpCall = 0;
+      setTimeout(() => {
+            victoryScreen.style.opacity = 1;
+      }, 200);
+}
+
+victoryScreen.addEventListener("click", () => {
+      if (setUpCall < 1) {
+            victoryScreen.classList.add("remove");
+            setTimeout(() => {
+                  victoryScreen.style.display = "none";
+            }, 700);
+            timerHTML.innerHTML = 100;
+            cardContainer.innerHTML = "";
+            moveHTML.innerHTML = 0;
+            setUp();
+      };
+      setUpCall++;
+});
+
+let loseScreen = document.getElementsByClassName("lose-screen")[0];
+let gameOver = () => {
+      let gameOver = new Audio("./assets/audio/game-over.wav");
+      gameOver.play();
+      loseScreen.style.display = "flex";
+      loseScreen.classList.remove("remove");
+      timerHTML.classList.remove("less");
+      setUpCall = 0;
+      setTimeout(() => {
+            loseScreen.style.opacity = 1;
+      }, 200);
+}
+
+loseScreen.addEventListener("click", () => {
+      if (setUpCall < 1) {
+            loseScreen.classList.add("remove");
+            setTimeout(() => {
+                  loseScreen.style.display = "none";
+            }, 700);
+            timerHTML.innerHTML = 100;
+            cardContainer.innerHTML = "";
+            moveHTML.innerHTML = 0;
+            setUp();
+      };
+      setUpCall++;
 });
